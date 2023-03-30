@@ -42,5 +42,22 @@ namespace EmployeDatas.Mysql
             connexion = new MySqlConnection(cs);
             connexion.Close();
         }
+
+        public string AfficherTousLesEmployes()
+        {
+            string requete = "SELECT * FROM employe";
+            string chaine = "";
+            this.OuvrirMySql();
+            MySqlCommand command = connexion.CreateCommand();
+            command.CommandText = requete;
+            MySqlDataReader reader = command.ExecuteReader();
+            while (reader.Read())
+            {
+                chaine += "ID : " + reader.GetString(0) + " | " + "Nom : " + reader.GetString(1) + "Prénom : " + reader.GetString(3) + "\n";
+            }
+            reader.Close();
+            this.FermerMySql();
+            return chaine;
+        }
     }
 }

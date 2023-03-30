@@ -5,6 +5,8 @@ using System.Text;
 using System.Threading.Tasks;
 using Oracle.ManagedDataAccess.Client;
 using MySql.Data.MySqlClient;
+using EmployeDatas.Mysql;
+using EmployeDatas.Oracle;
 
 
 namespace TD_ADONet
@@ -18,20 +20,25 @@ namespace TD_ADONet
             string sid = "SLAM";
             string login = "montenotado";
             string pwd = "sio";
-            try
-            {
-                String cs = String.Format("Data Source= " + "(DESCRIPTION = (ADDRESS = (PROTOCOL = TCP)(HOST = {0})(PORT = {1}))" + "(CONNECT_DATA = (SERVICE_NAME = {2}))); User Id = {3}; Password = {4};", host, port, sid, login, pwd);
 
-                OracleConnection cnOracle = new OracleConnection(cs);
-                cnOracle.Open();
-                Console.WriteLine("Connecté Oracle");
-                cnOracle.Close();
-                Console.WriteLine("Déconnecté Oracle");
-            }
-            catch(OracleException ex)
-            {
-                Console.WriteLine("Erreur Oracle " + ex.Message);
-            }
+            EmployeOracle cs1 = new EmployeOracle(host, port, sid, login, pwd);
+            Console.WriteLine(cs1.AfficherTousLesCours());
+
+
+            //try
+            //{
+            //    String cs = String.Format("Data Source= " + "(DESCRIPTION = (ADDRESS = (PROTOCOL = TCP)(HOST = {0})(PORT = {1}))" + "(CONNECT_DATA = (SERVICE_NAME = {2}))); User Id = {3}; Password = {4};", host, port, sid, login, pwd);
+
+            //    OracleConnection cnOracle = new OracleConnection(cs);
+            //    cnOracle.Open();
+            //    Console.WriteLine("Connecté Oracle");
+            //    cnOracle.Close();
+            //    Console.WriteLine("Déconnecté Oracle");
+            //}
+            //catch(OracleException ex)
+            //{
+            //    Console.WriteLine("Erreur Oracle " + ex.Message);
+            //}
 
 
             string hostMysql = "127.0.0.1";
@@ -39,19 +46,22 @@ namespace TD_ADONet
             string baseMysql = "dbadonet";
             String uidMysql = "employeado";
             String pwdMysql = "employeado123";
-            try
-            {
-                String csMysql = String.Format("Server = {0}; Port={1} ; Database = {2}; " + "Uid = {3}; " + "Pwd = {4}", hostMysql, portMysql, baseMysql, uidMysql, pwdMysql);
-                MySqlConnection cnMysql = new MySqlConnection(csMysql);
-                cnMysql.Open();
-                Console.WriteLine("connecté Mysql");
-                cnMysql.Close();
-                Console.WriteLine("déconnecté Mysql");
-            }
-            catch(MySqlException ex)
-            {
-                Console.WriteLine(ex.Message);
-            }
+
+            EmployeMysql cs = new EmployeMysql(hostMysql, portMysql, baseMysql, uidMysql, pwdMysql);
+            Console.WriteLine(cs.AfficherTousLesEmployes());
+            //try
+            //{
+            //    String csMysql = String.Format("Server = {0}; Port={1} ; Database = {2}; " + "Uid = {3}; " + "Pwd = {4}", hostMysql, portMysql, baseMysql, uidMysql, pwdMysql);
+            //    MySqlConnection cnMysql = new MySqlConnection(csMysql);
+            //    cnMysql.Open();
+            //    Console.WriteLine("connecté Mysql");
+            //    cnMysql.Close();
+            //    Console.WriteLine("déconnecté Mysql");
+            //}
+            //catch(MySqlException ex)
+            //{
+            //    Console.WriteLine(ex.Message);
+            //}
 
             Console.ReadKey();
         }

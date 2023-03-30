@@ -46,12 +46,21 @@ namespace EmployeDatas.Oracle
             Console.WriteLine("Déconnecté Oracle");
         }
 
-        public void afficherTousLesCours()
+        public string AfficherTousLesCours()
         {
+            string requete = "SELECT * FROM cours";
+            string chaine = "";
             this.OuvrirOracle();
-            string requete = "select * from cours";
-            this.connexion.CreateCommand(requete)
-
+            OracleCommand command = connexion.CreateCommand();
+            command.CommandText = requete;
+            OracleDataReader reader = command.ExecuteReader();
+            while (reader.Read())
+            {
+                chaine += "ID : " + reader.GetString(0) + " | " + "Nom : " + reader.GetString(1) + "\n";
+            }
+            reader.Close();
+            this.FermerOracle();
+            return chaine;
         }
 
     }
