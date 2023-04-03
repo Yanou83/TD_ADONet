@@ -28,10 +28,11 @@ namespace EmployeDatas.Mysql
 
         public void OuvrirMySql()
         {
-            String cs = String.Format("Data Source= " + "(DESCRIPTION = (ADDRESS = (PROTOCOL = TCP)(HOST = {0})(PORT = {1}))" + "(CONNECT_DATA = (SERVICE_NAME = {2}))); User Id = {3}; Password = {4};", this.host, this.port, this.db, this.login, this.pwd);
+            String cs = String.Format("Server = {0}; Port={1} ;Database = {2}; Uid = {3}; Pwd = {4}",host, port, db, login, pwd);
 
             connexion = new MySqlConnection(cs);
             connexion.Open();
+            Console.WriteLine("Connecté à MySql");
 
         }
 
@@ -41,23 +42,50 @@ namespace EmployeDatas.Mysql
 
             connexion = new MySqlConnection(cs);
             connexion.Close();
+            Console.WriteLine("Déconnecté de MySql");
         }
 
-        public string AfficherTousLesEmployes()
+
+        public void AfficherTousLesEmployes()
         {
-            string requete = "SELECT * FROM employe";
-            string chaine = "";
-            this.OuvrirMySql();
-            MySqlCommand command = connexion.CreateCommand();
-            command.CommandText = requete;
-            MySqlDataReader reader = command.ExecuteReader();
+            string requete = "SELECT employe.numemp, employe.nomemp, employe.prenomemp FROM employe";
+            MySqlCommand mySqlCommand = new MySqlCommand(requete, connexion);
+            MySqlDataReader reader = mySqlCommand.ExecuteReader();
             while (reader.Read())
             {
-                chaine += "ID : " + reader.GetString(0) + " | " + "Nom : " + reader.GetString(1) + "Prénom : " + reader.GetString(3) + "\n";
+                Int16 numero = reader.GetInt16(0);
+                string nom = reader.GetString(1);
+                string prenom = reader.GetString(2);
+                Console.WriteLine("Numéro : {0} | Nom : {1} | Prénom : {2}", numero, nom, prenom);
             }
             reader.Close();
-            this.FermerMySql();
-            return chaine;
+        }
+
+        public void AfficherNbSeminaires()
+        {
+            string requete = "SELECT count(seminaire.codesemi) FROM seminaire";
+            MySqlCommand mySqlCommand = new MySqlCommand(requete, connexion);
+            MySqlDataReader reader = mySqlCommand.ExecuteReader();
+            while (reader.Read())
+            {
+                Int16 nbsemi = reader.GetInt16(0);
+                Console.WriteLine("Nombre de séminaires : {0}",nbsemi);
+            }
+            reader.Close();
+        }
+
+        public void AfficherNbInscritsParCours()
+        {
+            string requete = "select seminaire.codecours, count(inscrit.numemp) from seminaire left join inscrit on inscrit.codesemi = seminaire.codesemi group by seminaire.codecours";
+            MySqlCommand mySqlCommand = new MySqlCommand(requete, connexion);
+            MySqlDataReader reader = mySqlCommand.ExecuteReader();
+            while (reader.Read())
+            {
+                string nbemploye = reader.GetString(0);
+                Int16 nbcours = reader.GetInt16(1);
+                Console.WriteLine("Codecours : {0} | Nombre d'inscrits : {1} \n", nbemploye, nbcours);
+            }
+            reader.Close();
         }
     }
 }

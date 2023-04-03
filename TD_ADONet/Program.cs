@@ -15,55 +15,64 @@ namespace TD_ADONet
     {
         static void Main(string[] args)
         {
+            //String host = "freesio.lyc-bonaparte.fr";
             String host = "10.10.2.10";
             int port = 1521;
-            string sid = "SLAM";
+            string sid = "slam";
             string login = "montenotado";
             string pwd = "sio";
 
-            EmployeOracle cs1 = new EmployeOracle(host, port, sid, login, pwd);
-            Console.WriteLine(cs1.AfficherTousLesCours());
+            try
+            {
+
+                EmployeOracle cs1 = new EmployeOracle(host, port, sid, login, pwd);
+                cs1.OuvrirOracle();
 
 
-            //try
-            //{
-            //    String cs = String.Format("Data Source= " + "(DESCRIPTION = (ADDRESS = (PROTOCOL = TCP)(HOST = {0})(PORT = {1}))" + "(CONNECT_DATA = (SERVICE_NAME = {2}))); User Id = {3}; Password = {4};", host, port, sid, login, pwd);
+                //    //Console.WriteLine(cs1.AfficherTousLesCours());
+                cs1.AfficherNbProjets();
+                
+                //    //cs1.AfficherSalaireMoyenParProjet();
+                //cs1.AugmenterSalaireCurseur();
+                //    //cs1.AfficherEmployesSalaire(125000);
+                //    cs1.AfficheSalaireEmploye(1);
+                //    ////cs1.InsereCours();
+                //    ////cs1.SupprimeCours("BR099");
+                //    //cs1.AugmenterSalaire(5, "PR2");
 
-            //    OracleConnection cnOracle = new OracleConnection(cs);
-            //    cnOracle.Open();
-            //    Console.WriteLine("Connecté Oracle");
-            //    cnOracle.Close();
-            //    Console.WriteLine("Déconnecté Oracle");
-            //}
-            //catch(OracleException ex)
-            //{
-            //    Console.WriteLine("Erreur Oracle " + ex.Message);
-            //}
+
+                cs1.FermerOracle();
+            }
+            catch (OracleException ex)
+            {
+                Console.WriteLine("Erreur Oracle " + ex.Message);
+            }
 
 
             string hostMysql = "127.0.0.1";
             int portMysql = 3306;
             string baseMysql = "dbadonet";
             String uidMysql = "employeado";
-            String pwdMysql = "employeado123";
+            String pwdMysql = "s7syW3f2RD6cR4";
+            try
+            {
+                EmployeMysql cs = new EmployeMysql(hostMysql, portMysql, baseMysql, uidMysql, pwdMysql);
 
-            EmployeMysql cs = new EmployeMysql(hostMysql, portMysql, baseMysql, uidMysql, pwdMysql);
-            Console.WriteLine(cs.AfficherTousLesEmployes());
-            //try
-            //{
-            //    String csMysql = String.Format("Server = {0}; Port={1} ; Database = {2}; " + "Uid = {3}; " + "Pwd = {4}", hostMysql, portMysql, baseMysql, uidMysql, pwdMysql);
-            //    MySqlConnection cnMysql = new MySqlConnection(csMysql);
-            //    cnMysql.Open();
-            //    Console.WriteLine("connecté Mysql");
-            //    cnMysql.Close();
-            //    Console.WriteLine("déconnecté Mysql");
-            //}
-            //catch(MySqlException ex)
-            //{
-            //    Console.WriteLine(ex.Message);
-            //}
+                cs.OuvrirMySql();
+
+                cs.AfficherTousLesEmployes();
+                cs.AfficherNbSeminaires();
+                cs.AfficherNbInscritsParCours();
+
+                cs.FermerMySql();
+            }
+            catch (MySqlException ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
 
             Console.ReadKey();
         }
     }
+    
 }
