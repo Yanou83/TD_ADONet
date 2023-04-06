@@ -16,7 +16,7 @@ namespace TD_ADONet
         static void Main(string[] args)
         {
             //String host = "freesio.lyc-bonaparte.fr";
-            String host = "10.10.2.10";
+            string host = "10.10.2.10";
             int port = 1521;
             string sid = "slam";
             string login = "montenotado";
@@ -30,39 +30,44 @@ namespace TD_ADONet
 
 
                 //    //Console.WriteLine(cs1.AfficherTousLesCours());
-                cs1.AfficherNbProjets();
-                
+                //    cs1.AfficherNbProjets();
                 //    //cs1.AfficherSalaireMoyenParProjet();
-                //cs1.AugmenterSalaireCurseur();
+                //    //Console.WriteLine(cs1.AugmenterSalaireCurseur());
                 //    //cs1.AfficherEmployesSalaire(125000);
-                //    cs1.AfficheSalaireEmploye(1);
+                //    cs1.AfficheSalaireEmploye(5);
                 //    ////cs1.InsereCours();
                 //    ////cs1.SupprimeCours("BR099");
                 //    //cs1.AugmenterSalaire(5, "PR2");
 
 
-                cs1.FermerOracle();
-            }
-            catch (OracleException ex)
-            {
-                Console.WriteLine("Erreur Oracle " + ex.Message);
-            }
+                //    cs1.FermerOracle();
+                //}
+                //catch (OracleException ex)
+                //{
+                //    Console.WriteLine("Erreur Oracle " + ex.Message);
+                //}
 
 
-            string hostMysql = "127.0.0.1";
+                string hostMysql = "127.0.0.1";
             int portMysql = 3306;
             string baseMysql = "dbadonet";
             String uidMysql = "employeado";
-            String pwdMysql = "s7syW3f2RD6cR4";
+            String pwdMysql = "employeado123";
             try
             {
                 EmployeMysql cs = new EmployeMysql(hostMysql, portMysql, baseMysql, uidMysql, pwdMysql);
-
                 cs.OuvrirMySql();
 
-                cs.AfficherTousLesEmployes();
-                cs.AfficherNbSeminaires();
+                //cs.AfficherTousLesEmployes();
+                //cs.AfficherNbSeminaires();
                 cs.AfficherNbInscritsParCours();
+                cs.AugmenterSalaireCurseur();
+                //cs.AfficheProjetsNbEmployes(5);
+                //cs.SeminairesPosterieurs("2018-12-15");
+                //cs.InsereProjet("PR6", "Projet Programmation", "2023-04-04", "2023-05-09", "Monsieur MONTENOT");
+                //cs.SupprimerSeminaire("BR0350216");
+                //cs.RajouterNbJoursCours(2, 4);
+
 
                 cs.FermerMySql();
             }
@@ -74,5 +79,4 @@ namespace TD_ADONet
             Console.ReadKey();
         }
     }
-    
 }
